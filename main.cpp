@@ -109,6 +109,21 @@ static std::array<double, N> mattimesscalar(const std::array<double, N>& a, cons
     return result;
 };
 
+template<size_t N>
+static size_t matargmax(const std::array<double, N>& a) {
+    double biggest = std::numeric_limits<double>::min();
+    size_t biggestIndex = 0;
+
+    for(size_t i = 0; i < N; ++i) {
+        if (a[i] > biggest) {
+            biggest = a[i];
+            biggestIndex = i;
+        }
+    }
+
+    return biggestIndex;
+};
+
 struct LstmCell {
     typedef std::array<double, 256> SingleWidthMat;
     typedef std::array<double, 512> DoubleWidthMat;
@@ -333,12 +348,14 @@ LstmCell::SingleWidthMat LstmCell::error_bo = LstmCell::SingleWidthMat();
 
 int main() {
     std::ifstream in("cnus.txt");
+    int charsRead = 0;
 
     std::vector<LstmCell> cells(1024);
     int cellIndex = 0;
 
     while(!in.eof()) {
         const int ch = in.get();
+        charsRead += 1;
         // make one-hot encoding from the input
         auto x = std::array<double, 256>();
         x[ch] = 1.0;
@@ -371,8 +388,31 @@ int main() {
         }
 
         // forward pass
-        const LstmCell& prevCell = cells.at((cellIndex - 1) % cells.size());
-        cells[cellIndex].forwardPass(x, prevCell.h, prevCell.C);
+        {
+            const LstmCell& prevCell = cells.at((cellIndex - 1) % cells.size());
+            cells[cellIndex].forwardPass(x, prevCell.h, prevCell.C);
+        }
+
+        // After a bit of training, run it forward a bunch to see what it does.
+        if(charsRead % 10000 == 0) {
+            const LstmCell* prevCell = &cells[cellIndex];
+            LstmCell cell;
+            for(int i = 0; i < 1000; ++i) {
+                // find the character to display
+                const size_t ch = matargmax(prevCell->h);
+                if(ch < 32)
+                    std::cout << " " << ch << " ";
+                else
+                    std::cout << (char)ch;
+
+                auto x = std::array<double, 256>();
+                x[ch] = 1.0;
+
+                cell.forwardPass(x, prevCell->h, prevCell->C);
+                prevCell = &cell;
+            }
+            std::cout << std::endl;
+        }
 
         cellIndex += 1;
         cellIndex %= cells.size();
