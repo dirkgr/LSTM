@@ -332,7 +332,7 @@ LstmCell::WeightMat LstmCell::error_Wo = LstmCell::WeightMat();
 LstmCell::SingleWidthMat LstmCell::error_bo = LstmCell::SingleWidthMat();
 
 int main() {
-    std::ifstream in("/Users/marvin/Downloads/cnus.txt");
+    std::ifstream in("cnus.txt");
 
     std::vector<LstmCell> cells(1024);
     int cellIndex = 0;
