@@ -326,23 +326,23 @@ struct LstmCell {
     }
 };
 
-LstmCell::WeightMat LstmCell::Wf = randmat<(256 + 256) * 256>();
-LstmCell::SingleWidthMat LstmCell::bf = randmat<256>();
+LstmCell::WeightMat LstmCell::Wf = mattimesscalar(randmat<(256 + 256) * 256>(), 0.1);
+LstmCell::SingleWidthMat LstmCell::bf = mattimesscalar(randmat<256>(), 0.1);
 LstmCell::WeightMat LstmCell::error_Wf = LstmCell::WeightMat();
 LstmCell::SingleWidthMat LstmCell::error_bf = LstmCell::SingleWidthMat();
 
-LstmCell::WeightMat LstmCell::Wi = randmat<(256 + 256) * 256>();
-LstmCell::SingleWidthMat LstmCell::bi = randmat<256>();
+LstmCell::WeightMat LstmCell::Wi = mattimesscalar(randmat<(256 + 256) * 256>(), 0.1);
+LstmCell::SingleWidthMat LstmCell::bi = mattimesscalar(randmat<256>(), 0.1);
 LstmCell::WeightMat LstmCell::error_Wi = LstmCell::WeightMat();
 LstmCell::SingleWidthMat LstmCell::error_bi = LstmCell::SingleWidthMat();
 
-LstmCell::WeightMat LstmCell::WC = randmat<(256 + 256) * 256>();
-LstmCell::SingleWidthMat LstmCell::bC = randmat<256>();
+LstmCell::WeightMat LstmCell::WC = mattimesscalar(randmat<(256 + 256) * 256>(), 0.1);
+LstmCell::SingleWidthMat LstmCell::bC = mattimesscalar(randmat<256>(), 0.1);
 LstmCell::WeightMat LstmCell::error_WC = LstmCell::WeightMat();
 LstmCell::SingleWidthMat LstmCell::error_bC = LstmCell::SingleWidthMat();
 
-LstmCell::WeightMat LstmCell::Wo = randmat<(256 + 256) * 256>();
-LstmCell::SingleWidthMat LstmCell::bo = randmat<256>();
+LstmCell::WeightMat LstmCell::Wo = mattimesscalar(randmat<(256 + 256) * 256>(), 0.1);
+LstmCell::SingleWidthMat LstmCell::bo = mattimesscalar(randmat<256>(), 0.1);
 LstmCell::WeightMat LstmCell::error_Wo = LstmCell::WeightMat();
 LstmCell::SingleWidthMat LstmCell::error_bo = LstmCell::SingleWidthMat();
 
